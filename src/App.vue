@@ -1,20 +1,21 @@
 <template>
   <v-app>
     <AppHeader/>
-    <!-- ここから追加 -->
+    <v-content>
+      <router-view/>
+    </v-content>
     <AppFooter/>
-    <!-- ここまで追加 -->
   </v-app>
 </template>
  
 <script>
 import AppHeader from './components/AppHeader.vue'
-import AppFooter from './components/AppFooter.vue' // 今回追加
+import AppFooter from './components/AppFooter.vue' 
  
 export default {
   components: {
     AppHeader,
-    AppFooter // 今回追加
+    AppFooter
   }
 }
 </script>
