@@ -24,5 +24,19 @@ export default {
       name: 'ACCESS',
       url: '/access'
     }
+  ],
+  workItems: [
+    {
+      src: require('../assets/464686_s.jpg'),
+      url: '/work#work-1'
+    },
+    {
+      src: require('../assets/logo.png'),
+      url: '/work#work-2'
+    },
+    {
+      src: require('../assets/logo.png'),
+      url: '/work#work-3'
+    }
   ]
 }
