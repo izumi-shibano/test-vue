@@ -2,16 +2,31 @@
   <section class="access">
     <AppBackgroundHolder :title="title"/>
     <v-app>
-      <v-container>
+      <v-container style="width: 600px;">
         <div id='app'>
-          <v-calendar    
-          ref="calendar"
-          v-model="focus"
-          color="primary"
-          type="month" 
-          ></v-calendar>  
+          <v-calendar
+            type="month"
+            color="primary"
+            :events="events"
+          ></v-calendar>
         </div> 
       </v-container>
+
+      <v-container style="width: 600px;">
+        <v-calendar
+          type="week"
+          color="primary"
+          :events="events2"
+        ></v-calendar>
+      </v-container>  
+
+      <v-container style="width: 600px; height: 800px;">
+        <v-calendar
+          type="day"
+          color="primary"
+          :events="events3"
+        ></v-calendar>
+      </v-container>          
     </v-app>
   </section>
 </template>
@@ -36,6 +51,27 @@ export default {
             },
           }
         ],
+        events: [
+          {
+            name: '打合せ',
+            start: '2021-06-03 09:00',
+            end: '2021-06-03 12:00',
+          },
+        ],
+        events2: [
+          {
+            name: '打合せ',
+            start: '2021-06-05 09:00',
+            end: '2021-06-05 12:00',
+          }
+      ],
+        events3: [
+          {
+            name: '打合せ',
+            start: '2021-06-01 09:00',
+            end: '2021-06-01 12:00',
+          },
+        ],      
     }
   },
   components: {
