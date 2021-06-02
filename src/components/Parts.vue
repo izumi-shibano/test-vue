@@ -68,6 +68,10 @@
                   <v-list-item-title>バナナ</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
+
+              <!-- 区切り線を表示します。 -->
+              <v-divider></v-divider>
+              
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title>オレンジ</v-list-item-title>
@@ -76,6 +80,38 @@
             </v-list-item-group>
           </v-list>
         </v-card>
+
+        <v-container style="width: 600px;">
+          <!--
+            タイムラインを表示します。
+            項目は左右交互に表示されます。
+            左側に表示される場合、左寄せになるためタイムライン側に評させる場合、右寄せにします。
+          -->
+          <v-timeline>
+            <v-timeline-item>項目1</v-timeline-item>
+            <v-timeline-item class="text-right">項目2</v-timeline-item>
+            <v-timeline-item>項目3</v-timeline-item>
+            <v-timeline-item class="text-right">項目4</v-timeline-item>
+            <v-timeline-item>項目5</v-timeline-item>
+          </v-timeline>
+        </v-container>
+
+        <v-container>
+          <!-- v-cardをホバー対象とします。 -->
+          <v-hover v-slot:default="{ hover }">
+            <!-- v-hoverによりv-cardのelevationが2から12に変更されます。 -->
+            <v-card
+              :elevation="hover ? 12 : 2"
+              class="mx-auto"
+              height="150"
+              width="200">
+              <v-card-text
+                class="my-4 text-center title">
+                Hello world!
+              </v-card-text>
+            </v-card>
+          </v-hover>
+        </v-container>                
 
    </v-app>
   </div>

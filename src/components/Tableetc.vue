@@ -106,6 +106,20 @@
             </v-sheet>
           </v-bottom-sheet>
         </v-container>
+        <v-container style="width: 500px;">
+          <!-- テーブルを表示します。 -->
+          <v-data-table
+          :headers="headers2"
+          :items="items2"
+        >
+          <!-- ウェブサイトの項目をリンクにします。 -->
+          <template v-slot:[`item.website`]="{ item }">
+            <a target="_blank" :href="item.website">
+              {{ item.website }}
+            </a>
+          </template>
+        </v-data-table>
+        </v-container>        
       </v-container>
    </v-app>
   </div>
@@ -149,7 +163,17 @@ export default {
       ],
       dialog: false,
       dialog2: false,
-      sheet: false,      
+      sheet: false,   
+      headers2: [
+        { text: "番号", value: "no" },
+        { text: "名前", value: "name" },
+        { text: "ウェブサイト", value: "website" },
+      ],
+      items2: [
+        { no: 1, name: "ニューラル", website: "http://newral.info" },
+        { no: 2, name: "プログラムを書こう", website: "https://www.paveway.info/" },
+        { no: 3, name: "PWEditor(iOSアプリ)", website: "https://apps.apple.com/jp/app/%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%82%A8%E3%83%87%E3%82%A3%E3%82%BF-pweditor/id1088572314" },
+      ],         
       }
   },
   components: {

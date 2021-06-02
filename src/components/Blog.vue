@@ -193,12 +193,12 @@ export default {
          {
           text: "root",
           disabled: false,
-          href: 'vuetify_v-breadcrumbs.html',
+          href: 'http://localhost:8080/#/about',
         },
         {
           text: "subdir1",
           disabled: false,
-          href: 'vuetify_v-breadcrumbs1.html',
+          href: 'http://localhost:8080/#/work#work-1',
         },
         {
           text: "subdir2",
