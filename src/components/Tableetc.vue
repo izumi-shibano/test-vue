@@ -131,14 +131,41 @@
               <div style="white-space: pre;">{{ item.name }}</div>
             </template>
           </v-data-table>
-        </v-container>        
+        </v-container>
+
+        <v-container style="margin-top: 20px; width: 300px;">
+          <!--
+            スパークラインを表示します。
+            value: 表示するスパークラインの値
+            gradient: グラデーション表示
+            smooth: 角丸め
+            line-width: ラインの太さ
+          -->
+          <v-sparkline
+            :value="value"
+            :gradient="gradient"
+            smooth="10"
+            line-width="2"
+          ></v-sparkline>
+        </v-container>                
 
       </v-container>
    </v-app>
   </div>
   </section>
 </template>
-<script> 
+<script>
+
+  const gradients = [
+    ['#222'],
+    ['#42b3f4'],
+    ['red', 'orange', 'yellow'],
+    ['purple', 'violet'],
+    ['#00c6ff', '#F0F', '#FF0'],
+    ['#f72047', '#ffd200', '#1feaea'],
+  ]
+
+
 export default {
   data () {
     return {
@@ -195,7 +222,9 @@ export default {
         { no: 1, name: "ニューラル" },
         { no: 2, name: "プログラムを書こう" },
         { no: 3, name: "PWEditor\r\n(iOSアプリ)" },
-      ],              
+      ],
+      value: [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0],
+      gradient: gradients[5],                    
       }
   },
   components: {

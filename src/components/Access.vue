@@ -26,7 +26,48 @@
           color="primary"
           :events="events3"
         ></v-calendar>
-      </v-container>          
+      </v-container> 
+
+      <v-container style="margin-top: 20px;">
+        <!--
+          デートピッカーを表示します。
+          type="date":日選択とします。
+          locale=ja-jp":日本語とします。
+        -->
+        <v-date-picker v-model="picker" type="date" locale="ja-jp"></v-date-picker>
+        <p>{{ picker }}</p>
+      </v-container> 
+
+      <v-container style="margin-top: 20px;">
+        <!--
+          マンスピッカーを表示します。
+          type="month":月選択とします。
+          locale=ja-jp":日本語とします。
+        -->
+        <v-date-picker
+          v-model="picker2"
+          type="month"
+          locale="ja-jp"
+          elevation="15"
+        ></v-date-picker>
+        <!-- マンスピッカーで選択した値を表示します。 -->
+        <p>{{ picker2 }}</p>
+      </v-container>   
+
+      <v-container style="margin-top: 20px;">
+        <!--
+          タイムピッカーを表示します。
+          format="ampm" : 12時間で表示します。
+          use-seconds="true" : 秒も表示します。
+        -->
+        <v-time-picker
+          v-model="picker3"
+          elevation="15"
+          format="ampm"
+          use-seconds="true"
+        ></v-time-picker>
+      </v-container>              
+
     </v-app>
   </section>
 </template>
@@ -71,8 +112,13 @@ export default {
             start: '2021-06-01 09:00',
             end: '2021-06-01 12:00',
           },
-        ],      
-    }
+        ],  
+        // デートピッカーで選択した値
+        picker: new Date().toISOString().substr(0, 10),  
+        // マンスピッカーで選択した値
+        picker2: new Date().toISOString().substr(0, 7),
+        // タイムピッカーで選択した値
+        picker3: "16:23:51",    }
   },
   components: {
     AppBackgroundHolder,

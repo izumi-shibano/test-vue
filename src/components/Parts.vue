@@ -96,6 +96,52 @@
           </v-timeline>
         </v-container>
 
+        <v-container style="margin-top: 20px;">
+          <v-layout justify-center row wrap>
+            <!-- 展開するフローティングアクションボタンを表示します。 -->
+            <v-speed-dial
+              v-model="fab"
+              direction="bottom"
+              >
+              <template v-slot:activator>
+                <v-btn
+                  color="blue"
+                  dark
+                  fab
+                >
+                  <v-icon v-if="fab">mdi-close</v-icon>
+                  <v-icon v-else>mdi-plus</v-icon>
+                </v-btn>
+              </template>
+              <!-- 展開された時に表示されるボタン -->
+              <v-btn
+                fab
+                dark
+                small
+                color="green"
+              >
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn
+                fab
+                dark
+                small
+                color="indigo"
+              >
+                <v-icon>mdi-file</v-icon>
+              </v-btn>
+              <v-btn
+                fab
+                dark
+                small
+                color="red"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-speed-dial>
+          </v-layout>
+        </v-container>
+
         <v-container>
           <!-- v-cardをホバー対象とします。 -->
           <v-hover v-slot:default="{ hover }">
@@ -111,9 +157,39 @@
               </v-card-text>
             </v-card>
           </v-hover>
-        </v-container>                
+        </v-container>
 
-   </v-app>
+        <v-container style="margin-top: 20px;">
+          <!-- カラーピッカーを表示します。 -->
+          <v-color-picker v-model="val"></v-color-picker>
+          <!-- カラーピッカーで選択した値を表示します。 -->
+          <div>{{ val }}</div>
+        </v-container>   
+
+        <v-container style="margin-top: 20px; width: 300px;">
+          <!--
+            レーティングを表示します。
+            indeterminate:常にアニメーションします。
+          -->
+          <v-progress-linear
+            indeterminate
+            color="primary"
+          ></v-progress-linear>
+        </v-container>
+
+        <v-container style="margin-top: 20px;">
+          <!--
+            プログレスバー(円形)を表示します。
+            indeterminate:常にアニメーションします。
+          -->
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+        </v-container>
+                     
+
+     </v-app>
   </div>
   </section>
 </template>
@@ -121,6 +197,8 @@
 export default {
   data () {
     return {
+      fab: false,
+      val: "FFFFFF",      
       }
   },
   components: {
