@@ -6,6 +6,8 @@ import Work from './src/components/Work.vue'
 import Service from './src/components/Service.vue'
 import Blog from './src/components/Blog.vue'
 import Access from './src/components/Access.vue'
+import Form from './src/components/Form.vue'
+
 
 Vue.use(Router)
  
@@ -40,7 +42,13 @@ export default new Router({
       path: '/access',
       name: 'Access',
       component: Access
+    },
+    {
+      path: '/form',
+      name: 'Form',
+      component: Form
     }
+
   ],
   scrollBehavior (to, from, savedPosition) {
     // ハッシュがある時にはその地点へとスクロールする
