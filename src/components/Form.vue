@@ -46,6 +46,7 @@
       <v-card-actions>
         <v-btn text @click="submit">送信する</v-btn>
         <span v-if="success">送信成功！</span>
+        <span v-if="failure">送信失敗</span>
       </v-card-actions>
     </v-card> 
    </v-app>
@@ -64,6 +65,8 @@ export default {
 
   data () {
     return {
+      success:false,
+      failure:false,
       title_f:'Form',
       title: '',
       author: '',
@@ -88,28 +91,30 @@ export default {
     }
   },
   methods: {
-    async submit() {
-      if (this.$refs.formref.validate()) {
+     async submit() {
+        const params = {
+          title: this.title, //タイトル
+          author: this.author, //投稿者
+          post_date: this.post_date, //投稿日時
+          content: this.content, // 本文
+        }
+        const post_url = 'https://directus.minamirnd.work/items/articles';
+        if (this.$refs.formref.validate()) {
         // すべてのバリデーションが通過したときのみ
         // if文の中に入る
-        this.success = true;
-        const params = {
-          title: this.title,
-          author: this.author,
-          post_date: this.post_date,
-          content: this.content,
-            }
-        const response = await axios.post('https://directus.minamirnd.work/items/articles', params)
-          response
-          .catch( error => {
-          console.log("response error", error)
-          return false 
-          })
-      } else {
-        this.success = false;
-      }        
-    }
-  } 
+          try{
+            await axios.post(post_url, params)
+            this.success = true; // 「送信成功！」表示
+            this.failure = false; // 「送信失敗」非表示
+          } catch(e) {
+            console.log("response error")
+            this.failure = true; // 「送信失敗」表示
+          }
+        } else {
+          this.success = false;
+        }        
+      }
+  }
 }
 </script>
 <style lang="scss" scoped>
