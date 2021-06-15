@@ -10,7 +10,6 @@ Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 Vue.use(VCalendar);
 
-
 new Vue({
   router,
   vuetify,

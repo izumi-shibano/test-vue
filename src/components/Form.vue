@@ -57,6 +57,7 @@
 <script>
 import AppBackgroundHolder from './AppBackgroundHolder.vue'
 import axios from 'axios'
+
  
 export default {
   components: {
@@ -98,12 +99,11 @@ export default {
           post_date: this.post_date, //投稿日時
           content: this.content, // 本文
         }
-        const post_url = 'https://directus.minamirnd.work/items/articles';
         if (this.$refs.formref.validate()) {
         // すべてのバリデーションが通過したときのみ
         // if文の中に入る
           try{
-            await axios.post(post_url, params)
+            await axios.post(process.env.VUE_APP_POST_URL, params)
             this.success = true; // 「送信成功！」表示
             this.failure = false; // 「送信失敗」非表示
           } catch(e) {
