@@ -48,7 +48,23 @@
         <span v-if="success">送信成功！</span>
         <span v-if="failure">送信失敗</span>
       </v-card-actions>
-    </v-card> 
+    </v-card>
+    <v-container style="width: 1200px;">
+      <v-data-table
+         :headers="headers"
+         :items="articleList"
+         >
+        <template slot="items" slot-scope="props">
+          <td class="text-xs-center">{{ props.item.id }}</td>
+          <td class="text-xs-center">{{ props.item.title }}</td>
+          <td class="text-xs-center">{{ props.item.name }}</td>
+          <td class="text-xs-center">{{ props.item.post_date }}</td>
+          <td class="text-xs-center">{{ props.item.content }}</td>
+          <td class="justify-center layout px-0">
+          </td>
+        </template>
+      </v-data-table>
+    </v-container> 
    </v-app>
   </div>
 
@@ -89,10 +105,42 @@ export default {
         v => !!v || '本文は必須項目です。',
         v => (v && v.length <= 10) || '本文は10文字以内です。'
       ],
+      headers: [
+        {
+          text: 'ID',
+          value: 'id',
+        },
+        {
+          text: 'タイトル',
+          value: 'title',
+        },
+        {
+          text: '投稿者',
+          value: 'author',
+        },
+        {
+          text: '投稿日時',
+          value: 'post_date',
+        },
+        {
+          text: '本文',
+          value: 'content',
+        },
+      ],
+      articleList: []
     }
   },
   methods: {
-     async submit() {
+    async indexArticles () {
+      this.articleList = [];
+      try{
+        const response = await axios.get(process.env.VUE_APP_API_URL)
+        this.articleList = response.data.data;
+      } catch(e) {
+        console.log("articleList error" + e)
+      }
+    },
+    async submit() {
         const params = {
           title: this.title, //タイトル
           author: this.author, //投稿者
@@ -103,7 +151,7 @@ export default {
         // すべてのバリデーションが通過したときのみ
         // if文の中に入る
           try{
-            await axios.post(process.env.VUE_APP_POST_URL, params)
+            await axios.post(process.env.VUE_APP_API_URL, params)
             this.success = true; // 「送信成功！」表示
             this.failure = false; // 「送信失敗」非表示
           } catch(e) {
@@ -114,6 +162,9 @@ export default {
           this.success = false;
         }        
       }
+  },
+  mounted() {
+    this.indexArticles();
   }
 }
 </script>
