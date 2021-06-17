@@ -4,67 +4,80 @@
   <!-- 'app'のタグはVue.jsによって操作されます。 -->
    <div id="app">
     <v-app>
-    <v-card>
-      <v-card-title>STEP:0 フォーム</v-card-title>
-        <v-form ref="formref">
-          <v-card-text>
-           <v-text-field
-              v-model="title"
-              :rules="titleRules"
-              label="タイトル"
-              counter="10"
-              required
-            >
-            </v-text-field>
-            <v-text-field
-              v-model="author"
-              :rules="authorRules"
-              label="投稿者"
-              counter="10"
-              required
-            >
-            </v-text-field>
-            <v-text-field
-              v-model="post_date"
-              :rules="post_dateRules"
-              label="日付"
-              counter="10"
-              required
-            >
-            </v-text-field>
-            <v-text-field
-              v-model="content"
-              :rules="contentRules"
-              label="本文"
-              counter="10"
-              required
-            >
-            </v-text-field>
-          </v-card-text>
-        </v-form>
-      <v-divider></v-divider>
-      <v-card-actions>
-        <v-btn text @click="submit">送信する</v-btn>
-        <span v-if="success">送信成功！</span>
-        <span v-if="failure">送信失敗</span>
-      </v-card-actions>
-    </v-card>
-    <v-container style="width: 1200px;">
-      <v-data-table
-         :headers="headers"
-         :items="articleList"
-         >
-        <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.id }}</td>
-          <td class="text-xs-center">{{ props.item.title }}</td>
-          <td class="text-xs-center">{{ props.item.name }}</td>
-          <td class="text-xs-center">{{ props.item.post_date }}</td>
-          <td class="text-xs-center">{{ props.item.content }}</td>
-          <td class="justify-center layout px-0">
-          </td>
-        </template>
-      </v-data-table>
-    </v-container> 
+      <v-container>
+        <v-data-table
+          :headers="headers"
+          :items="articleList"
+          :items-per-page="5"
+          @click:row="clickRow"
+          >
+          <!--v-data-tabelのitemsをslotに設定-->
+          <template slot="items" slot-scope="props">
+            <td class="text-xs-center">{{ props.item.id }}</td>
+            <td class="text-xs-center">{{ props.item.title }}</td>
+            <td class="text-xs-center">{{ props.item.name }}</td>
+            <td class="text-xs-center">{{ props.item.post_date }}</td>
+            <td class="text-xs-center">{{ props.item.content }}</td>
+            <td class="justify-center layout px-0">
+            </td>
+          </template>
+        </v-data-table>
+      </v-container> 
+      <v-container>
+        <v-card>
+          <v-card-text>タイトル：{{detailTitle}}</v-card-text>
+          <v-card-text>投稿者：{{detailAuthor}}</v-card-text>
+          <v-card-text>投稿日：{{detailDate}}</v-card-text>
+          <v-card-text>本文：{{detailContent}}</v-card-text>
+        </v-card>
+      </v-container>
+      <v-container style="margin-bottom: 50px;">
+        <v-card>
+        <v-card-title>投稿フォーム</v-card-title>
+          <v-form ref="formref">
+            <v-card-text>
+              <v-text-field
+                v-model="title"
+                :rules="titleRules"
+                label="タイトル"
+                counter="10"
+                required
+              >
+              </v-text-field>
+              <v-text-field
+                v-model="author"
+                :rules="authorRules"
+                label="投稿者"
+                counter="10"
+                required
+              >
+              </v-text-field>
+              <v-text-field
+                v-model="post_date"
+                :rules="post_dateRules"
+                label="日付"
+                counter="10"
+                required
+              >
+              </v-text-field>
+              <v-text-field
+                v-model="content"
+                :rules="contentRules"
+                label="本文"
+                counter="10"
+                required
+              >
+              </v-text-field>
+            </v-card-text>
+          </v-form>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-btn text @click="submit">送信する</v-btn>
+            <span v-if="success">送信成功！</span>
+            <span v-if="failure">送信失敗</span>
+          </v-card-actions>
+        </v-card>
+      </v-container>
    </v-app>
   </div>
 
@@ -127,7 +140,11 @@ export default {
           value: 'content',
         },
       ],
-      articleList: []
+      articleList: [],
+      detailTitle:'',
+      detailAuthor:'',
+      detailDate:'',
+      detailContent:''
     }
   },
   methods: {
@@ -137,7 +154,19 @@ export default {
         const response = await axios.get(process.env.VUE_APP_API_URL)
         this.articleList = response.data.data;
       } catch(e) {
-        console.log("articleList error" + e)
+        console.log("articleList error" + e )
+      }
+    },
+    async clickRow (row) {
+      try{
+        //const getid = await axios.get(process.env.VUE_APP_API_URL+"/"+row.id)
+        //this.detailTitle = getid.data.data.title;
+        this.detailTitle = row.title;
+        this.detailAuthor = row.author;
+        this.detailDate = row.post_date;
+        this.detailContent = row.content;
+      } catch(e) {
+        console.log("clickRow error" + e )
       }
     },
     async submit() {
