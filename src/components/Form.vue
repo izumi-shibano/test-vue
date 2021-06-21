@@ -5,29 +5,38 @@
    <div id="app">
     <v-app>
       <v-container>
-        <v-data-table
-          :headers="headers"
-          :items="articleList"
-          :items-per-page="5"
-          @click:row="clickRow"
-          >
-          <!--v-data-tabelのitemsをslotに設定-->
-          <template slot="items" slot-scope="props">
-            <td class="text-xs-center">{{ props.item.id }}</td>
-            <td class="text-xs-center">{{ props.item.title }}</td>
-            <td class="text-xs-center">{{ props.item.name }}</td>
-            <td class="text-xs-center">{{ props.item.post_date }}</td>
-            <td class="text-xs-center">{{ props.item.content }}</td>
-            <td class="justify-center layout px-0">
-            </td>
-          </template>
-        </v-data-table>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        >
+        </v-text-field>
+          <v-data-table
+            :headers="headers"
+            :items="articleList"
+            :items-per-page="5"
+            :search="search"
+            @click:row="clickRow"
+            >
+            <!--v-data-tabelのitemsをslotに設定-->
+            <template slot="items" slot-scope="props">
+              <td class="text-xs-center">{{ props.item.id }}</td>
+              <td class="text-xs-center">{{ props.item.title }}</td>
+              <td class="text-xs-center">{{ props.item.name }}</td>
+              <td class="text-xs-center">{{ props.item.post_date }}</td>
+              <td class="text-xs-center">{{ props.item.content }}</td>
+              <td class="justify-center layout px-0">
+              </td>
+            </template>
+          </v-data-table>
       </v-container> 
       <v-container>
         <v-card>
           <v-card-text>タイトル：{{detailTitle}}</v-card-text>
           <v-card-text>投稿者：{{detailAuthor}}</v-card-text>
-          <v-card-text>投稿日：{{detailDate}}</v-card-text>
+          <v-card-text>投稿日：{{moment(detailDate)}}</v-card-text>
           <v-card-text>本文：{{detailContent}}</v-card-text>
         </v-card>
       </v-container>
@@ -52,14 +61,21 @@
                 required
               >
               </v-text-field>
-              <v-text-field
-                v-model="post_date"
-                :rules="post_dateRules"
-                label="日付"
-                counter="10"
-                required
-              >
-              </v-text-field>
+              <v-menu v-model="menu" max-width="290px" min-width="290px">
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      slot="activator"
+                      v-model="post_date"
+                      :rules="post_dateRules"
+                      label="日付"
+                      v-on="on"
+                      readonly
+                      required
+                    >
+                    </v-text-field>
+                  </template>
+                <v-date-picker v-model="post_date" />
+              </v-menu>
               <v-text-field
                 v-model="content"
                 :rules="contentRules"
@@ -85,6 +101,7 @@
 </template>
 <script>
 import AppBackgroundHolder from './AppBackgroundHolder.vue'
+import moment from "moment"
 import axios from 'axios'
 
  
@@ -95,6 +112,7 @@ export default {
 
   data () {
     return {
+      search: '',
       success:false,
       failure:false,
       title_f:'Form',
@@ -112,7 +130,6 @@ export default {
       ],
       post_dateRules: [
         v => !!v || '日付は必須項目です。',
-        v => (v && v.length <= 10) || '日付は10文字以内です。'
       ],
       contentRules: [
         v => !!v || '本文は必須項目です。',
@@ -148,6 +165,11 @@ export default {
     }
   },
   methods: {
+    moment: function (date) {
+      if (date){
+      return moment(date).format('YYYY-MM-DD HH:mm:SS')
+      }
+    },
     async indexArticles () {
       this.articleList = [];
       try{
