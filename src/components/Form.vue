@@ -5,19 +5,32 @@
    <div id="app">
     <v-app>
       <v-container>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
-          hide-details
-        >
-        </v-text-field>
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="titleValue"
+              append-icon="mdi-magnify"
+              label="title"
+              single-line
+              hide-details
+            >
+            </v-text-field>
+          </v-col>
+          <v-col>
+            <v-text-field
+              v-model="authorValue"
+              append-icon="mdi-magnify"
+              label="author"
+              single-line
+              hide-details
+            >
+            </v-text-field>
+          </v-col>
+        </v-row>
           <v-data-table
             :headers="headers"
             :items="articleList"
             :items-per-page="5"
-            :search="search"
             @click:row="clickRow"
             >
             <!--v-data-tabelのitemsをslotに設定-->
@@ -112,14 +125,21 @@ export default {
 
   data () {
     return {
-      search: '',
+      menu:'',
+
+      titleValue: '',
+      authorValue:'',
+
       success:false,
       failure:false,
+
       title_f:'Form',
+
       title: '',
       author: '',
       post_date: '',
       content: '',
+
       titleRules: [
         v => !!v || 'タイトルは必須項目です。',
         v => (v && v.length <= 10) || 'タイトルは10文字以内です。'
@@ -143,10 +163,12 @@ export default {
         {
           text: 'タイトル',
           value: 'title',
+          filter: this.titleFilter
         },
         {
           text: '投稿者',
           value: 'author',
+          filter: this.authorFilter
         },
         {
           text: '投稿日時',
@@ -157,7 +179,9 @@ export default {
           value: 'content',
         },
       ],
+
       articleList: [],
+
       detailTitle:'',
       detailAuthor:'',
       detailDate:'',
@@ -181,8 +205,6 @@ export default {
     },
     async clickRow (row) {
       try{
-        //const getid = await axios.get(process.env.VUE_APP_API_URL+"/"+row.id)
-        //this.detailTitle = getid.data.data.title;
         this.detailTitle = row.title;
         this.detailAuthor = row.author;
         this.detailDate = row.post_date;
@@ -212,7 +234,19 @@ export default {
         } else {
           this.success = false;
         }        
-      }
+      },
+      titleFilter(value){
+        if (!this.titleValue) {
+          return true
+        }
+        return value === this.titleValue
+      },
+      authorFilter(value){
+        if (!this.authorValue) {
+          return true
+        }
+        return value === this.authorValue
+      },
   },
   mounted() {
     this.indexArticles();
