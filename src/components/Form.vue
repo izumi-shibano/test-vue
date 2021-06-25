@@ -93,7 +93,7 @@
                 v-model="content"
                 :rules="contentRules"
                 label="本文"
-                counter="10"
+                counter="100"
                 required
               >
               </v-text-field>
@@ -102,8 +102,22 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-btn text @click="submit">送信する</v-btn>
-            <span v-if="success">送信成功！</span>
-            <span v-if="failure">送信失敗</span>
+            <span v-if="success">
+              <v-alert 
+                type="success"
+                dense
+              >
+                送信成功！
+              </v-alert>
+            </span>
+            <span v-if="failure">
+              <v-alert 
+                type="error"
+                dense
+              >
+                送信失敗
+              </v-alert>
+            </span>
           </v-card-actions>
         </v-card>
       </v-container>
@@ -153,7 +167,7 @@ export default {
       ],
       contentRules: [
         v => !!v || '本文は必須項目です。',
-        v => (v && v.length <= 10) || '本文は10文字以内です。'
+        v => (v && v.length <= 100) || '本文は100文字以内です。'
       ],
       headers: [
         {
@@ -233,20 +247,29 @@ export default {
           }
         } else {
           this.success = false;
-        }        
-      },
-      titleFilter(value){
-        if (!this.titleValue) {
-          return true
+        } 
+
+        if (this.success) {
+        this.reset() 
         }
-        return value === this.titleValue
-      },
-      authorFilter(value){
-        if (!this.authorValue) {
-          return true
-        }
-        return value === this.authorValue
-      },
+    },
+
+    reset(){
+      this.$refs.formref.reset();
+    },
+
+    titleFilter(value){
+      if (!this.titleValue) {
+        return true
+      }
+      return value === this.titleValue
+    },
+    authorFilter(value){
+      if (!this.authorValue) {
+        return true
+      }
+      return value === this.authorValue
+    },
   },
   mounted() {
     this.indexArticles();
