@@ -25,8 +25,8 @@ export default {
       url: '/access'
     },
     {
-      name: 'FORM',
-      url: '/form'
+      name: 'ARTICLE',
+      url: '/article'
     }
    
   ],

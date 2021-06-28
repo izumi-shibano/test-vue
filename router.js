@@ -6,7 +6,9 @@ import Work from './src/components/Work.vue'
 import Service from './src/components/Service.vue'
 import Blog from './src/components/Blog.vue'
 import Access from './src/components/Access.vue'
-import Form from './src/components/Form.vue'
+import Article from './src/components/Article.vue'
+import ArticleDetail from './src/components/ArticleDetail.vue'
+
 
 
 Vue.use(Router)
@@ -44,9 +46,14 @@ export default new Router({
       component: Access
     },
     {
-      path: '/form',
-      name: 'Form',
-      component: Form
+      path: '/article',
+      name: 'Article',
+      component: Article
+    },
+    {
+      path: '/articledetail',
+      name: 'ArticleDetail',
+      component: ArticleDetail
     }
 
   ],
