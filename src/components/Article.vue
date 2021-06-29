@@ -45,14 +45,6 @@
             </template>
           </v-data-table>
       </v-container> 
-      <v-container>
-        <v-card>
-          <v-card-text>タイトル：{{detailTitle}}</v-card-text>
-          <v-card-text>投稿者：{{detailAuthor}}</v-card-text>
-          <v-card-text>投稿日：{{moment(detailDate)}}</v-card-text>
-          <v-card-text>本文：{{detailContent}}</v-card-text>
-        </v-card>
-      </v-container>
    </v-app>
   </div>
 
@@ -60,7 +52,6 @@
 </template>
 <script>
 import AppBackgroundHolder from './AppBackgroundHolder.vue'
-import moment from "moment"
 import axios from 'axios'
 
  
@@ -105,19 +96,9 @@ export default {
       ],
 
       articleList: [],
-
-      detailTitle:'',
-      detailAuthor:'',
-      detailDate:'',
-      detailContent:''
     }
   },
   methods: {
-    moment: function (date) {
-      if (date){
-      return moment(date).format('YYYY-MM-DD HH:mm:SS')
-      }
-    },
     async indexArticles () {
       this.articleList = [];
       try{
@@ -127,16 +108,30 @@ export default {
         console.log("articleList error" + e )
       }
     },
-    async clickRow (row) {
+    /*clickRow (row) {
       try{
         this.detailTitle = row.title;
-        this.detailAuthor = row.author;
-        this.detailDate = row.post_date;
-        this.detailContent = row.content;
+        //this.detailAuthor = row.author;
+        //this.detailDate = row.post_date;
+        //this.detailContent = row.content;
+        console.log(row)
       } catch(e) {
         console.log("clickRow error" + e )
       }
+    },*/
+
+    clickRow (row) {
+      this.$router.push({
+        path: '/articledetail',
+        query :{
+          title: row.title,
+          author: row.author,
+          post_date: row.post_date,
+          content: row.content
+        }
+      })
     },
+
     titleFilter(value){
       if (!this.titleValue) {
         return true

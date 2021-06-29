@@ -4,7 +4,7 @@
   <!-- 'app'のタグはVue.jsによって操作されます。 -->
    <div id="app">
     <v-app>
-      <v-container style="margin-bottom: 50px;">
+      <v-container>
         <v-card>
         <v-card-title>投稿フォーム</v-card-title>
           <v-form ref="formref">
@@ -74,9 +74,21 @@
           </v-card-actions>
         </v-card>
       </v-container>
+
       <v-container>
         <v-btn to="/article">一覧へ戻る</v-btn>
       </v-container>
+
+      <v-container>
+        <v-card>
+          <v-card-text>タイトル：{{detailTitle}}</v-card-text>
+          <v-card-text>投稿者：{{detailAuthor}}</v-card-text>
+          <v-card-text>投稿日：{{moment(detailDate)}}</v-card-text>
+          <v-card-text>本文：{{detailContent}}</v-card-text>
+        </v-card>
+      </v-container>
+
+
    </v-app>
   </div>
 
@@ -149,6 +161,11 @@ export default {
 
       articleList: [],
 
+      detailTitle:'',
+      detailAuthor:'',
+      detailDate:'',
+      detailContent:''
+
     }
   },
   methods: {
@@ -157,37 +174,46 @@ export default {
       return moment(date).format('YYYY-MM-DD HH:mm:SS')
       }
     },
+    test() {
+      this.detailTitle= this.$route.query.title
+      this.detailAuthor= this.$route.query.author
+      this.detailDate= this.$route.query.post_date
+      this.detailContent= this.$route.query.content
+    },
     async submit() {
-        const params = {
-          title: this.title, //タイトル
-          author: this.author, //投稿者
-          post_date: this.post_date, //投稿日時
-          content: this.content, // 本文
+      const params = {
+        title: this.title, //タイトル
+        author: this.author, //投稿者
+        post_date: this.post_date, //投稿日時
+        content: this.content, // 本文
+      }
+      if (this.$refs.formref.validate()) {
+      // すべてのバリデーションが通過したときのみ
+      // if文の中に入る
+        try{
+          await axios.post(process.env.VUE_APP_API_URL, params)
+          this.success = true; // 「送信成功！」表示
+          this.failure = false; // 「送信失敗」非表示
+        } catch(e) {
+          console.log("response error")
+          this.failure = true; // 「送信失敗」表示
         }
-        if (this.$refs.formref.validate()) {
-        // すべてのバリデーションが通過したときのみ
-        // if文の中に入る
-          try{
-            await axios.post(process.env.VUE_APP_API_URL, params)
-            this.success = true; // 「送信成功！」表示
-            this.failure = false; // 「送信失敗」非表示
-          } catch(e) {
-            console.log("response error")
-            this.failure = true; // 「送信失敗」表示
-          }
-        } else {
-          this.success = false;
-        } 
+      } else {
+        this.success = false;
+      } 
 
-        if (this.success) {
-        this.reset() 
-        }
+      if (this.success) {
+      this.reset() 
+      }
     },
 
     reset(){
       this.$refs.formref.reset();
     },
   },
+  mounted(){
+    this.test();
+  }
 }
 </script>
 <style lang="scss" scoped>
