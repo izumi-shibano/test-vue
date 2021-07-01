@@ -220,7 +220,7 @@ export default {
     AppBackgroundHolder,
     Tableetc,
     Parts
-  }
+  },
 }
 </script>
 <style lang="scss" scoped>

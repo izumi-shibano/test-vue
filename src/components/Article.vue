@@ -30,7 +30,7 @@
         </v-row>
           <v-data-table
             :headers="headers"
-            :items="articleList"
+            :items="List"
             @click:row="clickRow"
             >
             <!--v-data-tabelのitemsをslotに設定-->
@@ -52,7 +52,7 @@
 </template>
 <script>
 import AppBackgroundHolder from './AppBackgroundHolder.vue'
-import axios from 'axios'
+//import axios from 'axios'
 
  
 export default {
@@ -95,31 +95,10 @@ export default {
         },
       ],
 
-      articleList: [],
+      List: [],
     }
   },
   methods: {
-    async indexArticles () {
-      this.articleList = [];
-      try{
-        const response = await axios.get(process.env.VUE_APP_API_URL)
-        this.articleList = response.data.data;
-      } catch(e) {
-        console.log("articleList error" + e )
-      }
-    },
-    /*clickRow (row) {
-      try{
-        this.detailTitle = row.title;
-        //this.detailAuthor = row.author;
-        //this.detailDate = row.post_date;
-        //this.detailContent = row.content;
-        console.log(row)
-      } catch(e) {
-        console.log("clickRow error" + e )
-      }
-    },*/
-
     clickRow (row) {
       this.$router.push({
         path: '/articledetail',
@@ -145,9 +124,10 @@ export default {
       return value === this.authorValue
     },
   },
-  mounted() {
-    this.indexArticles();
-  }
+  async mounted() {
+    await this.$store.dispatch('getArticlesAction')
+    this.List = this.$store.state.articleList
+  },
 }
 </script>
 <style lang="scss" scoped>
