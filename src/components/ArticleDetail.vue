@@ -6,7 +6,7 @@
     <v-app>
       <v-container>
         <v-card>
-        <v-card-title>投稿フォーム</v-card-title>
+        <v-card-title>{{formTitle}}</v-card-title>
           <v-form ref="formref">
             <v-card-text>
               <v-text-field
@@ -14,6 +14,7 @@
                 :rules="titleRules"
                 label="タイトル"
                 counter="10"
+                :readonly="mode === 'show'"
                 required
               >
               </v-text-field>
@@ -22,6 +23,7 @@
                 :rules="authorRules"
                 label="投稿者"
                 counter="10"
+                :readonly="mode === 'show'"
                 required
               >
               </v-text-field>
@@ -33,7 +35,7 @@
                       :rules="post_dateRules"
                       label="日付"
                       v-on="on"
-                      readonly
+                      :readonly="mode !== 'new'"
                       required
                     >
                     </v-text-field>
@@ -45,12 +47,14 @@
                 :rules="contentRules"
                 label="本文"
                 counter="100"
+                :readonly="mode === 'show'"
                 required
               >
               </v-text-field>
             </v-card-text>
           </v-form>
           <v-divider></v-divider>
+          <div v-if="this.mode !== 'show'">
           <v-card-actions>
             <v-btn text @click="submit">送信する</v-btn>
             <span v-if="success">
@@ -72,22 +76,13 @@
               </v-alert>
             </span>
           </v-card-actions>
+          </div>
         </v-card>
       </v-container>
 
       <v-container>
         <v-btn to="/article">一覧へ戻る</v-btn>
       </v-container>
-
-      <v-container>
-        <v-card>
-          <v-card-text>タイトル：{{detailTitle}}</v-card-text>
-          <v-card-text>投稿者：{{detailAuthor}}</v-card-text>
-          <v-card-text>投稿日：{{moment(detailDate)}}</v-card-text>
-          <v-card-text>本文：{{detailContent}}</v-card-text>
-        </v-card>
-      </v-container>
-
 
    </v-app>
   </div>
@@ -96,9 +91,8 @@
 </template>
 <script>
 import AppBackgroundHolder from './AppBackgroundHolder.vue'
-import moment from "moment"
 import axios from 'axios'
-
+//import moment from 'moment'
  
 export default {
   components: {
@@ -107,6 +101,7 @@ export default {
 
   data () {
     return {
+      formTitle:'',
       menu:'',
 
       success:false,
@@ -161,24 +156,32 @@ export default {
 
       articleList: [],
 
-      detailTitle:'',
-      detailAuthor:'',
-      detailDate:'',
-      detailContent:''
-
+      mode:'',
     }
   },
   methods: {
-    moment: function (date) {
+    /*moment: function (date) {
       if (date){
-      return moment(date).format('YYYY-MM-DD HH:mm:SS')
+      return moment(date).format('YYYY-MM-DD HH:mm:ss')
       }
-    },
-    test() {
-      this.detailTitle= this.$route.query.title
-      this.detailAuthor= this.$route.query.author
-      this.detailDate= this.$route.query.post_date
-      this.detailContent= this.$route.query.content
+    },*/
+
+    displayForm() {
+      if (this.$route.query.mode === 'show') {
+          this.mode = this.$route.query.mode
+
+          this.formTitle = '投稿詳細'
+
+          this.title = this.$route.query.title
+          this.author= this.$route.query.author
+          this.post_date= this.$route.query.post_date
+          this.content= this.$route.query.content
+      
+      } else if (this.$route.query.mode === 'new') {
+          this.mode = this.$route.query.mode
+
+          this.formTitle = '投稿フォーム'
+      }
     },
     async submit() {
       const params = {
@@ -212,7 +215,7 @@ export default {
     },
   },
   mounted(){
-    this.test();
+    this.displayForm();
   }
 }
 </script>

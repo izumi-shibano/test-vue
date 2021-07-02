@@ -5,7 +5,9 @@
    <div id="app">
     <v-app>
       <v-container>
-        <v-btn to="/articledetail">新規登録</v-btn>
+        <v-btn @click="onNew">
+          新規登録
+        </v-btn>
         <v-row>
           <v-col>
             <v-text-field
@@ -95,10 +97,16 @@ export default {
         },
       ],
 
+      title: '',
+      author: '',
+      post_date:'',
+      content: '',
+
       List: [],
+      mode:''
     }
   },
-  methods: {
+  methods: {    
     clickRow (row) {
       this.$router.push({
         path: '/articledetail',
@@ -106,8 +114,18 @@ export default {
           title: row.title,
           author: row.author,
           post_date: row.post_date,
-          content: row.content
+          content: row.content,
+          mode: 'show',
         }
+      })
+    },
+
+    onNew(){
+      this.$router.push({
+        path: '/articledetail',
+        query :{
+          mode: 'new',
+        },
       })
     },
 

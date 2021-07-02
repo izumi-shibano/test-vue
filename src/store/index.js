@@ -7,12 +7,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    articleList:[]
+    articleList:[],
   },
   mutations: {
     getArticles(state,article_data){
       state.articleList = article_data
-    }
+    },
   },
   actions: {
     async getArticlesAction(context){
