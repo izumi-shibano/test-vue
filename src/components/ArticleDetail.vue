@@ -28,29 +28,31 @@
               >
               </v-text-field>
               <v-menu v-model="menu" max-width="290px" min-width="290px">
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      slot="activator"
-                      v-model="post_date"
-                      :rules="post_dateRules"
-                      label="日付"
-                      v-on="on"
-                      :readonly="mode !== 'new'"
-                      required
-                    >
-                    </v-text-field>
-                  </template>
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    slot="activator"
+                    v-model="post_date"
+                    :rules="post_dateRules"
+                    label="日付"
+                    v-on="on"
+                    :readonly="mode !== 'new'"
+                    required
+                  >
+                  </v-text-field>
+                </template>
                 <v-date-picker v-model="post_date" />
               </v-menu>
-              <v-text-field
+              <v-textarea
                 v-model="content"
                 :rules="contentRules"
                 label="本文"
                 counter="100"
+                rows='3'
+                auto-grow
                 :readonly="mode === 'show'"
                 required
               >
-              </v-text-field>
+              </v-textarea>
             </v-card-text>
           </v-form>
           <v-divider></v-divider>
