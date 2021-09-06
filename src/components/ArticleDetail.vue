@@ -5,7 +5,7 @@
    <div id="app">
     <v-app>
       <v-container>
-        <v-card>
+        <v-card height="480px">
         <v-card-title>{{formTitle}}</v-card-title>
           <v-form ref="formref">
             <v-card-text>
@@ -61,6 +61,7 @@
             <v-btn text @click="submit">送信する</v-btn>
             <span v-if="success">
               <v-alert 
+                class='alart'
                 type="success"
                 dense
                 dismissible
@@ -69,7 +70,8 @@
               </v-alert>
             </span>
             <span v-if="failure">
-              <v-alert 
+              <v-alert
+                class='alart'
                 type="error"
                 dense
                 dismissible
@@ -222,6 +224,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.alart {
+  margin: 0px;
+  padding: 0px,8px;
+}
 #direction {
   height: 1000px;
 }
