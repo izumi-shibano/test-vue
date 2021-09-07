@@ -36,6 +36,7 @@
                     label="日付"
                     v-on="on"
                     :readonly="mode !== 'new'"
+                    autocomplete="off"
                     required
                   >
                   </v-text-field>
@@ -228,6 +229,7 @@ export default {
   margin: 0px;
   padding: 0px,8px;
 }
+
 #direction {
   height: 1000px;
 }
